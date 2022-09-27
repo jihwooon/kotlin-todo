@@ -23,8 +23,8 @@ class ProductServiceImplTest {
 
     @Test
     fun getProduct() {
-        var name = "jihwoon"
-        var id = 1L
+        val name = "jihwoon"
+        val id = 1L
         val mockProduct = Product(name = name)
         given(productRepository.findById(id)).willReturn(Optional.of(mockProduct));
 
