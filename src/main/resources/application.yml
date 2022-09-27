@@ -1,0 +1,27 @@
+server:
+  port: 8087
+
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/data/kotilndb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    initialization-mode: always
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 1000
+
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org:
+      hibernate:
+        type: trace
