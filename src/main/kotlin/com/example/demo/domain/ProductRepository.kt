@@ -8,3 +8,4 @@ interface ProductRepository : CrudRepository<Product, Long> {
     override fun findById(id: Long): Optional<Product>
 
 }
+
