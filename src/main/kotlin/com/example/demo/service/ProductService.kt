@@ -1,11 +1,9 @@
 package com.example.demo.service
 
-import com.example.demo.domain.ProductRepository
-import org.springframework.stereotype.Service
+import com.example.demo.domain.Product
+import java.util.*
 
-@Service
-class ProductService (
-    private val productRepository : ProductRepository
-) {
-    fun getProduct(id: Long) = productRepository.findById(id)
+interface ProductService {
+
+    fun getProduct(id: Long): Optional<Product>
 }
