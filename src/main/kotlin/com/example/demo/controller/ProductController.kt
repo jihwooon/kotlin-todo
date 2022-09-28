@@ -7,13 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class ProductController(
-    private val productServiceImpl: ProductServiceImpl
-) {
+class ProductController(private val productServiceImpl: ProductServiceImpl) {
 
     @GetMapping("/product/{id}")
-    fun getProduct(
-        @PathVariable("id") id: Long
-    ): Product = productServiceImpl.getProduct(id)
+    fun getProduct(@PathVariable("id") id: Long): Product = productServiceImpl.getProduct(id)
         .orElseThrow()
 }

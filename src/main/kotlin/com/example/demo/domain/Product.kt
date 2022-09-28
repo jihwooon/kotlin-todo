@@ -10,8 +10,7 @@ class Product(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
-
+    val id: Long = 0L,
     val name: String = ""
 
 )
