@@ -5,11 +5,7 @@ import com.example.demo.service.ProductServiceImpl
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.BDDMockito.given
-import org.mockito.BDDMockito.verify
-import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -73,6 +69,16 @@ internal class ProductControllerTest {
         )
             .andExpect(status().isOk)
             .andExpect(content().string(containsString("jihwooon")))
+    }
+
+    // id값 예외를 만들어라
+    @Test
+    fun `Get NotFound response id`() {
+        val id = 1000L
+        mock.perform(
+            get("/product/$id")
+        )
+            .andExpect(status().isNotFound)
     }
 
     @Test
