@@ -1,6 +1,5 @@
 package com.example.demo.service
 
-import com.example.demo.controller.ProductRequest
 import com.example.demo.domain.Product
 import com.example.demo.domain.ProductRepository
 import org.springframework.stereotype.Service
@@ -12,9 +11,9 @@ class ProductServiceImpl(
 
     override fun getProduct(id: Long) = productRepository.findById(id);
 
-    override fun createProduct(productRequest: ProductRequest): Product {
+    override fun createProduct(name : String, email : String, phoneNumber : String): Product {
 
-        val product = Product(name = productRequest.name, email = productRequest.email, phoneNumber = productRequest.phoneNumber)
+        val product = Product(name = name, email = email, phoneNumber = phoneNumber)
 
         return productRepository.save(product)
     }

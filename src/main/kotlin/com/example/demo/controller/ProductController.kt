@@ -17,19 +17,15 @@ class ProductController(private val productServiceImpl: ProductServiceImpl) {
         .orElseThrow()
 
     @PostMapping("/product")
-    fun createProduct(@RequestBody productRequest : ProductRequest) : ResponseEntity<Any>? {
+    fun createProduct(@RequestBody productRequest: ProductRequest): ResponseEntity<Any>? {
 
-        productServiceImpl.createProduct(productRequest)
+        productServiceImpl.createProduct(productRequest.name, productRequest.email, productRequest.phoneNumber)
         return ResponseEntity.noContent().build()
     }
 }
 
-class ProductRequest (
-    val name : String = "",
-    val email : String = "",
-    val phoneNumber : String = ""
-)
-
-class ProductResponse (
-
+class ProductRequest(
+    val name: String = "",
+    val email: String = "",
+    val phoneNumber: String = ""
 )
