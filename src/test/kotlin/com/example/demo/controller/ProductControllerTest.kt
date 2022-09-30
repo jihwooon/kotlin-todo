@@ -1,5 +1,6 @@
 package com.example.demo.controller
 
+import com.example.demo.ProductNotFoundException
 import com.example.demo.domain.Product
 import com.example.demo.service.ProductServiceImpl
 import org.hamcrest.CoreMatchers.containsString
@@ -33,16 +34,16 @@ internal class ProductControllerTest {
 
     @BeforeEach
     fun setUp() {
-        val id = 1L
         product = Product(name = "jihwooon", phoneNumber = "000000000", email = "abc@gmail.com")
 
         given(productServiceImpl.getProducts()).willReturn(listOf(product))
 
-        given(productServiceImpl.getProduct(id)).willReturn(Optional.of(product))
+        given(productServiceImpl.getProduct(1L)).willReturn(Optional.of(product))
+
+        given(productServiceImpl.getProduct(1000L)).willThrow(ProductNotFoundException())
 
         given(productServiceImpl.createProduct(name = "jihwooon", phoneNumber = "000000000", email = "abc@gmail.com"))
             .willReturn(product)
-
     }
 
     @Test
@@ -75,6 +76,7 @@ internal class ProductControllerTest {
     @Test
     fun `Get NotFound response id`() {
         val id = 1000L
+
         mock.perform(
             get("/product/$id")
         )
