@@ -5,6 +5,7 @@ import java.util.*
 
 interface ProductService {
 
+    fun getProducts() : List<Product>?
     fun getProduct(id: Long): Optional<Product>
     fun createProduct(name : String, email : String, phoneNumber : String): Product
 }

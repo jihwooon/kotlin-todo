@@ -43,7 +43,12 @@ dependencies {
 
     testImplementation("org.assertj:assertj-core:3.23.1")
 
+    // validation
+    implementation ("org.springframework.boot:spring-boot-starter-validation")
+
+    // Lonbok
     compileOnly("org.projectlombok:lombok")
+
     // h2
     runtimeOnly ("com.h2database:h2")
 

@@ -35,6 +35,7 @@ class ProductServiceImplTest {
         val name = "jihwoon"
         val id = 1L
         val mockProduct = Product(name = name)
+
         given(productRepository.findById(id)).willReturn(Optional.of(mockProduct));
 
         val product = productServiceImpl.getProduct(id)
@@ -62,5 +63,4 @@ class ProductServiceImplTest {
         assertThat(product.phoneNumber).isEqualTo("0000000")
 
     }
-
 }

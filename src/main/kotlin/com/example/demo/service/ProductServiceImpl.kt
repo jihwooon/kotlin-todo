@@ -9,6 +9,8 @@ class ProductServiceImpl(
     private val productRepository: ProductRepository
 ) : ProductService {
 
+    override fun getProducts(): List<Product>? = null
+
     override fun getProduct(id: Long) = productRepository.findById(id);
 
     override fun createProduct(name : String, email : String, phoneNumber : String): Product {
