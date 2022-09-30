@@ -3,11 +3,13 @@ package com.example.demo.service
 import com.example.demo.domain.Product
 import com.example.demo.domain.ProductRepository
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers.any
 import org.mockito.BDDMockito.given
-import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 import org.mockito.junit.jupiter.MockitoExtension
 import java.util.*
 
@@ -17,9 +19,17 @@ class ProductServiceImplTest {
     @Mock
     private lateinit var productRepository: ProductRepository
 
-    @InjectMocks
+
     private lateinit var productServiceImpl: ProductServiceImpl
 
+    @BeforeEach
+    fun setUp() {
+        MockitoAnnotations.initMocks(this)
+
+        productServiceImpl = ProductServiceImpl(
+            productRepository
+        )
+    }
 
     @Test
     fun getProduct() {
@@ -30,6 +40,28 @@ class ProductServiceImplTest {
 
         val product = productServiceImpl.getProduct(id)
         assertThat(product.get().name).isEqualTo(name)
+    }
+
+    @Test
+    fun createProduct() {
+        val name = "jihwooon"
+        val email = "abc@gmail.com"
+        val phoneNumber = "0000000"
+
+        given(productRepository.save(any())).willReturn(
+            Product(
+                name = "jihwooon",
+                email = "abc@gmail.com",
+                phoneNumber = "0000000"
+            )
+        )
+
+        val product = productServiceImpl.createProduct(name, email, phoneNumber)
+
+        assertThat(product.name).isEqualTo("jihwooon")
+        assertThat(product.email).isEqualTo("abc@gmail.com")
+        assertThat(product.phoneNumber).isEqualTo("0000000")
+
     }
 
 }
