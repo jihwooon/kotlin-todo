@@ -10,9 +10,9 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.nio.charset.StandardCharsets
@@ -45,7 +45,26 @@ internal class ProductControllerTest {
 
         result
             .andExpect(status().isOk)
-            .andDo(document("get-return"))
             .andExpect(content().string(containsString("jihwooon")))
+    }
+
+    @Test
+    fun `Post 204 no content response product`() {
+
+        val product = Product(name = "jihwooon", phoneNumber = "000000000", email = "abc@gmail.com")
+
+        given(productServiceImpl.createProduct(name = "jihwooon", phoneNumber = "000000000", email = "abc@gmail.com"))
+            .willReturn(product)
+
+        val content = "{\"name\":\"jihwooon\",\"phoneNumber\":\"000000000\",\"email\":\"abc@gmail.com\"}"
+
+        mock.perform(
+            post("/product")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8.name())
+                .content(content)
+        )
+            .andExpect(status().isNoContent)
     }
 }
