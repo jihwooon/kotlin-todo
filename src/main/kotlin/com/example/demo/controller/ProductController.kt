@@ -1,6 +1,5 @@
 package com.example.demo.controller
 
-import com.example.demo.ProductNotFoundException
 import com.example.demo.domain.Product
 import com.example.demo.service.ProductServiceImpl
 import org.springframework.http.ResponseEntity
@@ -22,8 +21,7 @@ class ProductController(private val productServiceImpl: ProductServiceImpl) {
     fun getProducts(): List<Product> = productServiceImpl.getProducts()
 
     @GetMapping("/product/{id}")
-    fun getProduct(@PathVariable("id") id: Long): Product = productServiceImpl.getProduct(id)
-        .orElseThrow{ProductNotFoundException()}
+    fun getProduct(@PathVariable("id") id: Long): isBooleanResponse = productServiceImpl.getProduct(id)
 
     @PostMapping("/product")
     fun createProduct(@RequestBody @Valid productRequest: ProductRequest): ResponseEntity<Any>? {
@@ -54,4 +52,8 @@ data class ProductUpdateRequest(
     val name: String = "",
     val email: String = "",
     val phoneNumber: String = ""
+)
+
+data class isBooleanResponse(
+    val isRegistered: Boolean = true
 )
