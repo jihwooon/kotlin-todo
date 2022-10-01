@@ -1,6 +1,5 @@
 package com.example.demo.service
 
-import com.example.demo.controller.ProductUpdateRequest
 import com.example.demo.domain.Product
 import com.example.demo.domain.ProductRepository
 import org.springframework.stereotype.Service
