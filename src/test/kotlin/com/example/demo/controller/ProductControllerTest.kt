@@ -120,8 +120,7 @@ internal class ProductControllerTest {
                 .content(content)
         )
             .andExpect(status().isOk)
-//            .andExpect(content().string(containsString("010-1111-3333")))
+
         verify(productServiceImpl).updateProduct(id, name = "jihwooon", phoneNumber = "010-1111-3333", email = "abc@gmail.com");
     }
-
 }
