@@ -25,7 +25,7 @@ class ProductServiceImpl(
 
     override fun updateProduct(id: Long, productUpdateRequest: ProductUpdateRequest): Product {
 
-        val findById = productRepository.findById(id);
+        val findById = productRepository.findById(id)
 
         val product = Product(
             id = findById.get().id,
@@ -34,6 +34,11 @@ class ProductServiceImpl(
             phoneNumber = productUpdateRequest.phoneNumber
         )
         return productRepository.save(product)
+    }
+
+    override fun deleteProduct(id: Long) : Unit {
+
+        return productRepository.deleteById(id)
     }
 
 }

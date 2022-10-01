@@ -11,4 +11,6 @@ interface ProductService {
     fun getProduct(id: Long): Optional<Product>
     fun createProduct(productRequest: ProductRequest): Product
     fun updateProduct(id: Long, productUpdateRequest: ProductUpdateRequest): Product?
+    fun deleteProduct(id: Long): Unit
+
 }

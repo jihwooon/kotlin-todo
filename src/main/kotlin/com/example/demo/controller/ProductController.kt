@@ -4,6 +4,7 @@ import com.example.demo.ProductNotFoundException
 import com.example.demo.domain.Product
 import com.example.demo.service.ProductServiceImpl
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -33,6 +34,9 @@ class ProductController(private val productServiceImpl: ProductServiceImpl) {
 
     @PatchMapping("/product/{id}")
     fun updateProduct(@PathVariable("id") id: Long, @RequestBody request: ProductUpdateRequest) : Product? = productServiceImpl.updateProduct(id, request)
+
+    @DeleteMapping("/product/{id}")
+    fun deleteProduct(@PathVariable("id")id : Long) : Unit  = productServiceImpl.deleteProduct(id)
 
 }
 
