@@ -12,7 +12,9 @@ class ProductServiceImpl(
     private val productRepository: ProductRepository
 ) : ProductService {
 
-    override fun getProducts(): List<Product>? = null
+    override fun getProducts(): List<Product> {
+        return productRepository.findAll() as List<Product>;
+    }
 
     override fun getProduct(id: Long): Optional<Product> = productRepository.findById(id);
 

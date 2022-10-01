@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 import javax.validation.constraints.Email
-import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Pattern
 
 @RestController
 class ProductController(private val productServiceImpl: ProductServiceImpl) {
 
     @GetMapping("/products")
-    fun getProducts(): List<Product>? {
+    fun getProducts(): List<Product> {
 
         return productServiceImpl.getProducts()
     }
@@ -50,7 +49,7 @@ data class ProductRequest(
     @field: Email(message = "이메일 형식이 아닙니다.")
     val email: String = "",
 
-    @field: Pattern(regexp = "^\\d{3}\\d{3,4}\\d{4}$", message = "000-0000-0000의 형식은 맞지 않습니다.")
+    @field: Pattern(regexp = "^\\d{3}\\d{3,4}\\d{4}$", message = "01012345678의 형식은 맞지 않습니다.")
     val phoneNumber: String = ""
 )
 
