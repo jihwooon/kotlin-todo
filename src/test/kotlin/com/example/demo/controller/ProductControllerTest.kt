@@ -7,6 +7,7 @@ import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
+import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -48,15 +49,18 @@ internal class ProductControllerTest {
 
     @Test
     fun `Get list response`() {
-        mock.perform(get("/products")
-            .accept(MediaType.APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON)
-            .characterEncoding(StandardCharsets.UTF_8.name())
+        mock.perform(
+            get("/products")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8.name())
         )
             .andExpect(status().isOk)
             .andExpect(content().string(containsString("jihwooon")))
             .andExpect(content().string(containsString("000000000")))
             .andExpect(content().string(containsString("abc@gmail.com")))
+
+        verify(productServiceImpl).getProducts()
     }
 
     @Test
@@ -70,9 +74,10 @@ internal class ProductControllerTest {
         )
             .andExpect(status().isOk)
             .andExpect(content().string(containsString("jihwooon")))
+
+        verify(productServiceImpl).getProduct(id)
     }
 
-    // id값 예외를 만들어라
     @Test
     fun `Get NotFound response id`() {
         val id = 1000L
@@ -81,6 +86,8 @@ internal class ProductControllerTest {
             get("/product/$id")
         )
             .andExpect(status().isNotFound)
+
+        verify(productServiceImpl).getProduct(id)
     }
 
     @Test
@@ -95,5 +102,26 @@ internal class ProductControllerTest {
                 .content(content)
         )
             .andExpect(status().isNoContent)
+
+        verify(productServiceImpl).createProduct(name = "jihwooon", phoneNumber = "000000000", email = "abc@gmail.com")
     }
+
+    //TODO : update를 만들어라
+    @Test
+    fun `Update product reponse product`() {
+        val content = "{\"name\":\"jihwooon\",\"phoneNumber\":\"010-1111-3333\",\"email\":\"abc@gmail.com\"}"
+        val id = 1L
+
+        mock.perform(
+            patch("/product/$id")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8.name())
+                .content(content)
+        )
+            .andExpect(status().isOk)
+//            .andExpect(content().string(containsString("010-1111-3333")))
+        verify(productServiceImpl).updateProduct(id, name = "jihwooon", phoneNumber = "010-1111-3333", email = "abc@gmail.com");
+    }
+
 }

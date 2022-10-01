@@ -1,5 +1,6 @@
 package com.example.demo.service
 
+import com.example.demo.controller.ProductUpdateRequest
 import com.example.demo.domain.Product
 import com.example.demo.domain.ProductRepository
 import org.springframework.stereotype.Service
@@ -19,4 +20,9 @@ class ProductServiceImpl(
 
         return productRepository.save(product)
     }
+
+    override fun updateProduct(id: Long, email: String, phoneNumber: String, name: String): Product? {
+        return null
+    }
+
 }
