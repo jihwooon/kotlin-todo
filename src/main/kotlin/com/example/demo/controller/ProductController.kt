@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
-import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Email
+import javax.validation.constraints.Pattern
 
 @RestController
 class ProductController(private val productServiceImpl: ProductServiceImpl) {
 
     @GetMapping("/products")
-    fun getProducts(): List<Product>? {
+    fun getProducts(): List<Product> {
 
         return productServiceImpl.getProducts()
     }
@@ -29,7 +30,7 @@ class ProductController(private val productServiceImpl: ProductServiceImpl) {
     @PostMapping("/product")
     fun createProduct(@RequestBody @Valid productRequest: ProductRequest): ResponseEntity<Any>? {
 
-        productServiceImpl.createProduct(productRequest.name, productRequest.email, productRequest.phoneNumber)
+        productServiceImpl.createProduct(productRequest)
         return ResponseEntity.noContent().build()
     }
 
@@ -37,7 +38,7 @@ class ProductController(private val productServiceImpl: ProductServiceImpl) {
     @PatchMapping("/product/{id}")
     fun updateProduct(@PathVariable("id") id: Long, @RequestBody request: ProductUpdateRequest) : Product? {
 
-        return productServiceImpl.updateProduct(id, request.email, request.name, request.phoneNumber)
+        return productServiceImpl.updateProduct(id, request)
     }
 
 }
@@ -45,8 +46,10 @@ class ProductController(private val productServiceImpl: ProductServiceImpl) {
 data class ProductRequest(
     val name: String = "",
 
-    @field: NotBlank(message = "이메일은 필수 입니다.")
+    @field: Email(message = "이메일 형식이 아닙니다.")
     val email: String = "",
+
+    @field: Pattern(regexp = "^\\d{3}\\d{3,4}\\d{4}$", message = "01012345678의 형식은 맞지 않습니다.")
     val phoneNumber: String = ""
 )
 
