@@ -6,6 +6,7 @@ import com.example.demo.service.ProductServiceImpl
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers.any
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,6 +26,7 @@ import java.util.*
 @AutoConfigureRestDocs
 internal class ProductControllerTest {
 
+
     @Autowired
     private lateinit var mock: MockMvc
 
@@ -35,6 +37,7 @@ internal class ProductControllerTest {
 
     @BeforeEach
     fun setUp() {
+
         product = Product(name = "jihwooon", phoneNumber = "000000000", email = "abc@gmail.com")
 
         given(productServiceImpl.getProducts()).willReturn(listOf(product))
@@ -43,8 +46,20 @@ internal class ProductControllerTest {
 
         given(productServiceImpl.getProduct(1000L)).willThrow(ProductNotFoundException())
 
-        given(productServiceImpl.createProduct(name = "jihwooon", phoneNumber = "000000000", email = "abc@gmail.com"))
-            .willReturn(product)
+//        given(productServiceImpl.createProduct(any(ProductRequest::class.java)))
+//            .willReturn(product)
+
+//        given(productServiceImpl.updateProduct(eq(1L), any(ProductUpdateRequest::class.java)))
+//            .will { invocation ->
+//                val id: Long = invocation.getArgument(0)
+//                val productData: ProductUpdateRequest = invocation.getArgument(1)
+//                Product(
+//                    id = id,
+//                    name = productData.name,
+//                    email = productData.email,
+//                    phoneNumber = productData.phoneNumber
+//                )
+//        }
     }
 
     @Test
@@ -103,7 +118,7 @@ internal class ProductControllerTest {
         )
             .andExpect(status().isNoContent)
 
-        verify(productServiceImpl).createProduct(name = "jihwooon", phoneNumber = "000000000", email = "abc@gmail.com")
+        verify(productServiceImpl).createProduct(any(ProductRequest::class.java))
     }
 
     //TODO : update를 만들어라
@@ -120,7 +135,8 @@ internal class ProductControllerTest {
                 .content(content)
         )
             .andExpect(status().isOk)
+            .andExpect(content().string(containsString("jihwooon")))
 
-        verify(productServiceImpl).updateProduct(id, name = "jihwooon", phoneNumber = "010-1111-3333", email = "abc@gmail.com");
+        verify(productServiceImpl).updateProduct(1L, ProductUpdateRequest(name = "jihwooon", email = "abc@gmail.com", phoneNumber="010-1111-3333"))
     }
 }

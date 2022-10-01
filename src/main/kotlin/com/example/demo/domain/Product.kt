@@ -13,5 +13,7 @@ class Product(
     val id: Long = 0L,
     val name: String = "",
     val email: String = "",
-    val phoneNumber : String = ""
+    val phoneNumber: String = ""
+
 )
+
