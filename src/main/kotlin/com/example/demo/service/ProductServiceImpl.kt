@@ -12,9 +12,7 @@ class ProductServiceImpl(
     private val productRepository: ProductRepository
 ) : ProductService {
 
-    override fun getProducts(): List<Product> {
-        return productRepository.findAll() as List<Product>;
-    }
+    override fun getProducts(): List<Product> = productRepository.findAll() as List<Product>;
 
     override fun getProduct(id: Long): Optional<Product> = productRepository.findById(id);
 
@@ -27,7 +25,7 @@ class ProductServiceImpl(
 
     override fun updateProduct(id: Long, productUpdateRequest: ProductUpdateRequest): Product {
 
-        val findById = productRepository.findById(id);
+        val findById = productRepository.findById(id)
 
         val product = Product(
             id = findById.get().id,
@@ -36,6 +34,11 @@ class ProductServiceImpl(
             phoneNumber = productUpdateRequest.phoneNumber
         )
         return productRepository.save(product)
+    }
+
+    override fun deleteProduct(id: Long) : Unit {
+
+        return productRepository.deleteById(id)
     }
 
 }

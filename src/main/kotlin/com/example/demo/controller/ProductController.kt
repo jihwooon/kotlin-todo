@@ -4,6 +4,7 @@ import com.example.demo.ProductNotFoundException
 import com.example.demo.domain.Product
 import com.example.demo.service.ProductServiceImpl
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -18,10 +19,7 @@ import javax.validation.constraints.Pattern
 class ProductController(private val productServiceImpl: ProductServiceImpl) {
 
     @GetMapping("/products")
-    fun getProducts(): List<Product> {
-
-        return productServiceImpl.getProducts()
-    }
+    fun getProducts(): List<Product> = productServiceImpl.getProducts()
 
     @GetMapping("/product/{id}")
     fun getProduct(@PathVariable("id") id: Long): Product = productServiceImpl.getProduct(id)
@@ -34,12 +32,11 @@ class ProductController(private val productServiceImpl: ProductServiceImpl) {
         return ResponseEntity.noContent().build()
     }
 
-
     @PatchMapping("/product/{id}")
-    fun updateProduct(@PathVariable("id") id: Long, @RequestBody request: ProductUpdateRequest) : Product? {
+    fun updateProduct(@PathVariable("id") id: Long, @RequestBody request: ProductUpdateRequest) : Product? = productServiceImpl.updateProduct(id, request)
 
-        return productServiceImpl.updateProduct(id, request)
-    }
+    @DeleteMapping("/product/{id}")
+    fun deleteProduct(@PathVariable("id")id : Long) : Unit  = productServiceImpl.deleteProduct(id)
 
 }
 
