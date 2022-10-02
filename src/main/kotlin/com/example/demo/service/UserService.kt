@@ -33,13 +33,13 @@ class UserService(
 
     fun updateUser(id: Long, updateRequest: UserUpdateDto): User {
         val userId = userRepository.findById(id)
-        val user = User(
-            id = userId.get().id,
+            .orElseThrow { UserNotFoundException() }
+
+        return User(
+            id = userId.id,
             name = updateRequest.name,
             email = updateRequest.email,
             password = updateRequest.password
         )
-
-        return user
     }
 }

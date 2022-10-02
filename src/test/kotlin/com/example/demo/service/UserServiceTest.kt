@@ -13,7 +13,6 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.any
-import org.mockito.kotlin.refEq
 import org.mockito.kotlin.verify
 import java.util.*
 
@@ -90,9 +89,9 @@ internal class UserServiceTest {
 
         given(userRepository.save(any())).willReturn(user)
 
-        val createUser = userService.createUser(userRequest)
+        val saved = userService.createUser(userRequest)
 
-        assertThat(createUser.id).isEqualTo(1L)
+        assertThat(saved.id).isEqualTo(1L)
 
     }
 
