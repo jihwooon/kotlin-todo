@@ -88,7 +88,7 @@ internal class ProductControllerTest {
 
 //    @Test
 //    fun `Post 204 no content response product`() {
-//        val content = "{\"name\":\"jihwooon\",\"phoneNumber\":\"010000000\",\"email\":\"abc@gmail.com\"}"
+//        val content = "{\"season_id\":\1"\",\"phoneNumber\":\"01012345678\",\"email\":\"abc@codesoom.com\"}"
 //
 //        mock.perform(
 //            post("/product")
@@ -99,7 +99,9 @@ internal class ProductControllerTest {
 //        )
 //            .andExpect(status().isNoContent)
 //    }
-//
+// NotificationsController 테스트 코드를 구현하라
+
+// NotificationsController에 테스트 코드를 작성했습니다.
 //    //TODO : update를 만들어라
 //    @Test
 //    fun `Update product reponse product`() {

@@ -1,5 +1,6 @@
 package com.example.demo.controller
 
+import com.example.demo.UserNotFoundException
 import com.example.demo.domain.User
 import com.example.demo.service.UserService
 import org.springframework.http.HttpStatus
@@ -26,9 +27,9 @@ class UserController(
 
     //TODO : User 정보 조회를 만들어라
     @GetMapping("/user/{id}")
-    fun getUser(@PathVariable id: Long): Optional<User> {
+    fun getUser(@PathVariable id: Long): User {
 
-        return userService.getUser(id)
+        return userService.getUser(id).orElseThrow { UserNotFoundException()}
     }
 
     // TODO : User 저장을 만들어라
