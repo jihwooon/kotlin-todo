@@ -1,6 +1,5 @@
 package com.example.demo.service
 
-import com.example.demo.ProductNotFoundException
 import com.example.demo.UserNotFoundException
 import com.example.demo.domain.User
 import com.example.demo.domain.UserRepository
@@ -30,7 +29,6 @@ internal class UserServiceTest {
 
         given(userRepository.findAll()).willReturn(listOf(user))
 
-        given(userRepository.findById(1L)).willReturn(Optional.of(user))
     }
 
     @Test
@@ -50,21 +48,28 @@ internal class UserServiceTest {
         assertThat(users[0].name).isEqualTo("abc")
     }
 
-    //TODO : UserService 조회 테스트를 구현하라
     @Test
     fun getUserId() {
-        val user = userService.getUser(1L)
+        val id = 1004L
 
-        assertThat(user).isNotNull
+        given(userRepository.findById(id)).willReturn(
+            Optional.of(User(id = id))
+        )
 
-        assertThat(user.get().name).isEqualTo("abc")
+        val user = userService.getUser(id).orElseThrow {
+            UserNotFoundException()
+        }
+
+        assertThat(user.id).isEqualTo(id)
     }
 
+//    // TODO : 왜 예외가 안 되는지 확인 하기
 //    @Test
-//    fun getUserNotExistedId() {
-//        val user = userService.getUser(1004L).orElseThrow {
-//            UserNotFoundException()
-//        }
-//        assertThat(user.id).isEqualTo(1004L)
+//    fun `User NotFound response id`() {
+//        assertThatThrownBy{
+//            userService.getUser(1004L)
+//        }.isInstanceOf(
+//            UserNotFoundException::class.java
+//        )
 //    }
 }
