@@ -1,6 +1,7 @@
 package com.example.demo.service
 
 import com.example.demo.controller.UserRequestDto
+import com.example.demo.controller.UserUpdateDto
 import com.example.demo.domain.User
 import com.example.demo.domain.UserRepository
 import org.springframework.stereotype.Service
@@ -31,5 +32,9 @@ class UserService(
         )
 
         return userRepository.save(user)
+    }
+
+    fun updateUser(id: Long, updateRequest: UserUpdateDto): User? {
+        return null
     }
 }
