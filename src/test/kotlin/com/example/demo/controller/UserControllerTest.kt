@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
+import org.mockito.kotlin.eq
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -89,6 +90,35 @@ internal class UserControllerTest {
             .andExpect(content().string(content))
 
         verify(userService).createUser(userRequestDto)
+    }
+
+    @Test
+    fun  `Patch product response requestUpdateDto`() {
+        val userUpdateRequest = UserUpdateDto(name = "efg", password = "5678", email = "efg@gmail.com")
+        val id = 1L
+        val content = "{\"name\":\"efg\",\"password\":\"5678\",\"email\":\"efg@gmail.com\"}"
+
+        given(userService.updateUser(id, userUpdateRequest))
+            .will { invocation ->
+                val id: Long = invocation.getArgument(0)
+                val userData: UserUpdateDto = invocation.getArgument(1)
+                User(
+                    name = userData.name,
+                    password = userData.password,
+                    email = userData.email
+                )
+            }
+
+        mvc.perform(
+            patch("/user/$id")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content)
+        )
+            .andExpect(status().isOk)
+            .andExpect(content().string(containsString("efg")))
+
+        verify(userService).updateUser(id, userUpdateRequest)
     }
 
 }
