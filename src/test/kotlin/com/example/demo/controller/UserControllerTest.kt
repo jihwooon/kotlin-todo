@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets
 import java.util.*
 
 @WebMvcTest(UserController::class)
-internal class UserControllerTest() {
+internal class UserControllerTest {
 
     @Autowired
     private lateinit var mvc: MockMvc
@@ -41,7 +41,7 @@ internal class UserControllerTest() {
 
     @Test
     fun `Get user return id`() {
-        val id: Long = 1L
+        val id = 1L
 
         val user = User(id = id, name = "abc", email = "abc@gmail.com", password = "1234")
 
@@ -62,7 +62,7 @@ internal class UserControllerTest() {
 
     @Test
     fun `Get NotFound response Incorrect_id`() {
-        val id: Long = 1000L
+        val id = 1000L
 
         given(userService.getUser(id)).willThrow(UserNotFoundException())
 
