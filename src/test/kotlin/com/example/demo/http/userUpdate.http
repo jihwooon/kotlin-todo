@@ -1,0 +1,8 @@
+PATCH http://localhost:8087/user/1
+Content-Type: application/json;utf-8
+
+{
+  "name": "efg",
+  "email": "efg@gmail.com12",
+  "password": "456"
+}
