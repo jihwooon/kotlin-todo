@@ -2,10 +2,10 @@ package com.example.demo.service
 
 import com.example.demo.controller.ProductRequest
 import com.example.demo.controller.ProductUpdateRequest
-import com.example.demo.controller.isBooleanResponse
 import com.example.demo.domain.Product
 import com.example.demo.domain.ProductRepository
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class ProductServiceImpl(
@@ -14,14 +14,7 @@ class ProductServiceImpl(
 
     override fun getProducts(): List<Product> = productRepository.findAll() as List<Product>;
 
-    override fun getProduct(id: Long): isBooleanResponse {
-        val findById = productRepository.findById(id)
-
-        if (findById.isEmpty) {
-            return isBooleanResponse(isRegistered = false)
-        }
-        return isBooleanResponse(isRegistered = true)
-    }
+    override fun getProduct(id: Long): Optional<Product> = productRepository.findById(id)
 
     override fun createProduct(productRequest: ProductRequest): Product {
         val product =

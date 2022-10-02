@@ -3,10 +3,8 @@ package com.example.demo.controller
 import com.example.demo.ProductNotFoundException
 import com.example.demo.domain.Product
 import com.example.demo.service.ProductServiceImpl
-import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.any
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,31 +33,23 @@ internal class ProductControllerTest {
 
     private lateinit var product: Product
 
+    private var notProductId = 1000L
+
+    private var productId = 1L
+
     @BeforeEach
     fun setUp() {
 
-        product = Product(name = "jihwooon", phoneNumber = "000000000", email = "abc@gmail.com")
+        product = Product()
 
         given(productServiceImpl.getProducts()).willReturn(listOf(product))
 
-        given(productServiceImpl.getProduct(1L)).willReturn(Optional.of(product))
+        given(productServiceImpl.getProduct(productId)).willReturn(Optional.of(product))
 
-        given(productServiceImpl.getProduct(1000L)).willThrow(ProductNotFoundException())
+        given(productServiceImpl.getProduct(notProductId)).willReturn(Optional.empty())
 
-//        given(productServiceImpl.createProduct(any(ProductRequest::class.java)))
-//            .willReturn(product)
+        given(productServiceImpl.getProduct(notProductId)).willThrow(ProductNotFoundException())
 
-//        given(productServiceImpl.updateProduct(eq(1L), any(ProductUpdateRequest::class.java)))
-//            .will { invocation ->
-//                val id: Long = invocation.getArgument(0)
-//                val productData: ProductUpdateRequest = invocation.getArgument(1)
-//                Product(
-//                    id = id,
-//                    name = productData.name,
-//                    email = productData.email,
-//                    phoneNumber = productData.phoneNumber
-//                )
-//        }
     }
 
     @Test
@@ -71,69 +61,60 @@ internal class ProductControllerTest {
                 .characterEncoding(StandardCharsets.UTF_8.name())
         )
             .andExpect(status().isOk)
-            .andExpect(content().string(containsString("jihwooon")))
-            .andExpect(content().string(containsString("000000000")))
-            .andExpect(content().string(containsString("abc@gmail.com")))
 
         verify(productServiceImpl).getProducts()
     }
 
     @Test
-    fun `Get product response id`() {
-        val id = 1L
+    fun `Get response true`() {
         mock.perform(
-            get("/product/$id")
+            get("/product/$productId")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(StandardCharsets.UTF_8.name())
         )
             .andExpect(status().isOk)
-            .andExpect(content().string(containsString("jihwooon")))
-
+            .andExpect(content().string("true"))
     }
 
     @Test
-    fun `Get NotFound response id`() {
-        val id = 1000L
-
+    fun `Get NotFound response false`() {
         mock.perform(
-            get("/product/$id")
+            get("/product/$notProductId")
         )
             .andExpect(status().isNotFound)
-
+            .andExpect(content().string("{}"))
     }
 
-    @Test
-    fun `Post 204 no content response product`() {
-        val content = "{\"name\":\"jihwooon\",\"phoneNumber\":\"010000000\",\"email\":\"abc@gmail.com\"}"
-
-        mock.perform(
-            post("/product")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding(StandardCharsets.UTF_8.name())
-                .content(content)
-        )
-            .andExpect(status().isNoContent)
-
-//        verify(productServiceImpl).createProduct(any(ProductRequest::class.java))
-    }
-
-    //TODO : update를 만들어라
-    @Test
-    fun `Update product reponse product`() {
-        val content = "{\"name\":\"jihwooon\",\"phoneNumber\":\"010-1111-3333\",\"email\":\"abc@gmail.com\"}"
-        val id = 1L
-
-        mock.perform(
-            patch("/product/$id")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding(StandardCharsets.UTF_8.name())
-                .content(content)
-        )
-            .andExpect(status().isOk)
-            .andExpect(content().string(containsString("jihwooon")))
-
-    }
+//    @Test
+//    fun `Post 204 no content response product`() {
+//        val content = "{\"name\":\"jihwooon\",\"phoneNumber\":\"010000000\",\"email\":\"abc@gmail.com\"}"
+//
+//        mock.perform(
+//            post("/product")
+//                .accept(MediaType.APPLICATION_JSON)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .characterEncoding(StandardCharsets.UTF_8.name())
+//                .content(content)
+//        )
+//            .andExpect(status().isNoContent)
+//    }
+//
+//    //TODO : update를 만들어라
+//    @Test
+//    fun `Update product reponse product`() {
+//        val content = "{\"name\":\"jihwooon\",\"phoneNumber\":\"010-1111-3333\",\"email\":\"abc@gmail.com\"}"
+//        val id = 1L
+//
+//        mock.perform(
+//            patch("/product/$id")
+//                .accept(MediaType.APPLICATION_JSON)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .characterEncoding(StandardCharsets.UTF_8.name())
+//                .content(content)
+//        )
+//            .andExpect(status().isOk)
+//            .andExpect(content().string(containsString("jihwooon")))
+//
+//    }
 }

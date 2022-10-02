@@ -13,4 +13,10 @@ class ProductErrorAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ProductNotFoundException::class)
     fun handleProductNotFound() = "{}"
+
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(UserNotFoundException::class)
+    fun handleUserNotFound() = "UserNotFoundException"
 }
