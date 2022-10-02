@@ -41,7 +41,7 @@ class UserController(
 
     // TODO : User 정보를 수정하라
     @PatchMapping("/user/{id}")
-    fun updateUser(@PathVariable id: Long, @RequestBody updateRequest: UserUpdateDto): User? {
+    fun updateUser(@PathVariable id: Long, @RequestBody updateRequest: UserUpdateDto): User {
 
         return userService.updateUser(id, updateRequest)
     }

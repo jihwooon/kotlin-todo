@@ -2,6 +2,7 @@ package com.example.demo.service
 
 import com.example.demo.UserNotFoundException
 import com.example.demo.controller.UserRequestDto
+import com.example.demo.controller.UserUpdateDto
 import com.example.demo.domain.User
 import com.example.demo.domain.UserRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -94,6 +95,36 @@ internal class UserServiceTest {
 
         //Object argument that is reflection-equal to the given value with support for excluding selected fields from a class.
         verify(userRepository).save(refEq(user))
+
+    }
+
+    @Test
+    fun updateUser() {
+        val id = 1L
+        val userUpdateRequest = UserUpdateDto(name = "efg", password = "5678", email = "efg@gmail.com")
+
+        given(userRepository.findById(id)).willReturn(
+            Optional.of(User(id = id))
+        )
+
+        given(userRepository.save(any()))
+            .will { invocation ->
+                val id: Long = invocation.getArgument(0)
+                val userData: UserUpdateDto = invocation.getArgument(1)
+                User(
+                    id = id,
+                    name = userData.name,
+                    email = userData.email,
+                    password = userData.password
+                )
+            }
+
+        val updateUser = userService.updateUser(id, userUpdateRequest)
+
+        assertThat(updateUser.id).isEqualTo(id)
+        assertThat(updateUser.name).isEqualTo("efg")
+        assertThat(updateUser.password).isEqualTo("efg")
+        assertThat(updateUser.email).isEqualTo("efg")
 
     }
 }
