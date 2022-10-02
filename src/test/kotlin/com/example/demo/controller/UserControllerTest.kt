@@ -43,7 +43,7 @@ internal class UserControllerTest() {
     fun `Get user return id`() {
         val id: Long = 1L
 
-        val user = User(id = id, name = "jihwooon", email = "abc@gmail.com", password = "1234")
+        val user = User(id = id, name = "abc", email = "abc@gmail.com", password = "1234")
 
         given(userService.getUser(id)).willReturn(Optional.of(user))
 
@@ -54,8 +54,8 @@ internal class UserControllerTest() {
                 .characterEncoding(StandardCharsets.UTF_8.name())
         )
             .andExpect(status().isOk)
-            .andExpect(content().string("{\"id\":1,\"name\":\"jihwooon\",\"password\":\"1234\",\"email\":\"abc@gmail.com\"}"))
-            .andExpect(content().string(containsString("jihwooon")))
+            .andExpect(content().string("{\"id\":1,\"name\":\"abc\",\"password\":\"1234\",\"email\":\"abc@gmail.com\"}"))
+            .andExpect(content().string(containsString("abc")))
 
         verify(userService).getUser(id)
     }
