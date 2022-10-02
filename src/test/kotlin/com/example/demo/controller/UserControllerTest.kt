@@ -5,7 +5,6 @@ import com.example.demo.domain.User
 import com.example.demo.service.UserService
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
@@ -29,17 +28,10 @@ internal class UserControllerTest {
     @MockBean
     private lateinit var userService: UserService
 
-    private lateinit var user: User
-
-    @BeforeEach
-    fun setUp() {
-        user = User(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")
-        given(userService.getList()).willReturn(listOf(user))
-
-    }
-
     @Test
     fun `Get user return list`() {
+        given(userService.getList()).willReturn(listOf(User(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")))
+
         mvc.perform(get("/users"))
             .andExpect(status().isOk)
 
@@ -50,9 +42,7 @@ internal class UserControllerTest {
     fun `Get user return id`() {
         val id = 1L
 
-        val user = User(id = id, name = "abc", email = "abc@gmail.com", password = "1234")
-
-        given(userService.getUser(id)).willReturn(Optional.of(user))
+        given(userService.getUser(id)).willReturn(Optional.of(User(id = id, name = "abc", email = "abc@gmail.com", password = "1234")))
 
         mvc.perform(
             get("/user/$id")
@@ -69,7 +59,7 @@ internal class UserControllerTest {
 
     @Test
     fun `Get NotFound response Incorrect_id`() {
-        val id = 1000L
+        val id = 1004L
 
         given(userService.getUser(id)).willThrow(UserNotFoundException())
 
@@ -81,6 +71,24 @@ internal class UserControllerTest {
             .andExpect(status().isNotFound)
 
         verify(userService).getUser(id)
+    }
+
+    @Test
+    fun `Post product response requestDto`() {
+        val userRequestDto = UserRequestDto(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")
+        val content = "{\"id\":1,\"name\":\"abc\",\"password\":\"1234\",\"email\":\"abc@gmail.com\"}"
+        given(userService.createUser(userRequestDto)).willReturn(User(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234"))
+
+        mvc.perform(
+            post("/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content)
+        )
+            .andExpect(status().isCreated)
+            .andExpect(content().string(content))
+
+        verify(userService).createUser(userRequestDto)
     }
 
 }
