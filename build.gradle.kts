@@ -58,6 +58,10 @@ dependencies {
     //MockK
     testImplementation("io.mockk:mockk:1.13.2")
 
+    //Mockito Kotlin
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+
+
 
 }
 
