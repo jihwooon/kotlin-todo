@@ -21,7 +21,12 @@ class ProductController(private val productServiceImpl: ProductServiceImpl) {
     fun getProducts(): List<Product> = productServiceImpl.getProducts()
 
     @GetMapping("/product/{id}")
-    fun getProduct(@PathVariable("id") id: Long): isBooleanResponse = productServiceImpl.getProduct(id)
+    fun getProduct(@PathVariable("id") id: Long): Boolean  {
+
+        val product = productServiceImpl.getProduct(id)
+
+        return product.isPresent
+    }
 
     @PostMapping("/product")
     fun createProduct(@RequestBody @Valid productRequest: ProductRequest): ResponseEntity<Any>? {
