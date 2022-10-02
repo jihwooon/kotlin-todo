@@ -4,7 +4,6 @@ import com.example.demo.UserNotFoundException
 import com.example.demo.domain.User
 import com.example.demo.domain.UserRepository
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given

@@ -1,6 +1,6 @@
 package com.example.demo.service
 
-import com.example.demo.UserNotFoundException
+import com.example.demo.controller.UserRequestDto
 import com.example.demo.domain.User
 import com.example.demo.domain.UserRepository
 import org.springframework.stereotype.Service
@@ -19,5 +19,10 @@ class UserService(
     fun getUser(id: Long): Optional<User> {
         return userRepository.findById(id)
 
+    }
+
+    fun createUser(userRequest: UserRequestDto) : User? {
+
+        return null
     }
 }
