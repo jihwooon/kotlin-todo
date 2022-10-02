@@ -5,6 +5,7 @@ import com.example.demo.domain.User
 import com.example.demo.service.UserService
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
@@ -28,11 +29,17 @@ internal class UserControllerTest {
     @MockBean
     private lateinit var userService: UserService
 
+    private lateinit var user: User
+
+    @BeforeEach
+    fun setUp() {
+        user = User(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")
+        given(userService.getList()).willReturn(listOf(user))
+
+    }
+
     @Test
     fun `Get user return list`() {
-
-        given(userService.getList()).willReturn(listOf())
-
         mvc.perform(get("/users"))
             .andExpect(status().isOk)
 
