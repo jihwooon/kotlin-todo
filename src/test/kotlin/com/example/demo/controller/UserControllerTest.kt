@@ -96,13 +96,14 @@ internal class UserControllerTest {
     fun  `Patch product response requestUpdateDto`() {
         val userUpdateRequest = UserUpdateDto(name = "efg", password = "5678", email = "efg@gmail.com")
         val id = 1L
-        val content = "{\"name\":\"efg\",\"password\":\"5678\",\"email\":\"efg@gmail.com\"}"
+        val content = "{\"id\":1,\"name\":\"efg\",\"password\":\"5678\",\"email\":\"efg@gmail.com\"}"
 
         given(userService.updateUser(id, userUpdateRequest))
             .will { invocation ->
                 val id: Long = invocation.getArgument(0)
                 val userData: UserUpdateDto = invocation.getArgument(1)
                 User(
+                    id = id,
                     name = userData.name,
                     password = userData.password,
                     email = userData.email
@@ -116,7 +117,7 @@ internal class UserControllerTest {
                 .content(content)
         )
             .andExpect(status().isOk)
-            .andExpect(content().string(containsString("efg")))
+            .andExpect(content().string(content))
 
         verify(userService).updateUser(id, userUpdateRequest)
     }
