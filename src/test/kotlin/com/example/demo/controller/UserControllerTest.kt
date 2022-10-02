@@ -121,4 +121,23 @@ internal class UserControllerTest {
         verify(userService).updateUser(id, userUpdateRequest)
     }
 
+    @Test
+    fun  `Patch NotFoundException response requestUpdateDto`() {
+        val userUpdateRequest = UserUpdateDto(name = "efg", password = "5678", email = "efg@gmail.com")
+        val id = 1004L
+        val content = "{\"id\":1,\"name\":\"efg\",\"password\":\"5678\",\"email\":\"efg@gmail.com\"}"
+
+        given(userService.updateUser(id, userUpdateRequest)).willThrow(UserNotFoundException())
+
+        mvc.perform(
+            patch("/user/$id")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content)
+        )
+            .andExpect(status().isNotFound)
+
+        verify(userService).updateUser(id, userUpdateRequest)
+    }
+
 }
