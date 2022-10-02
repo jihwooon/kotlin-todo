@@ -85,7 +85,6 @@ internal class UserServiceTest {
             password = userRequest.password
         )
 
-        given(userRepository.findById(1L)).willReturn(Optional.of(user))
         given(userRepository.save(any())).willReturn(user)
 
         val createUser = userService.createUser(userRequest)
