@@ -1,10 +1,13 @@
 package com.example.demo.service
 
+import com.example.demo.ProductNotFoundException
+import com.example.demo.UserNotFoundException
 import com.example.demo.controller.UserRequestDto
+import com.example.demo.controller.UserUpdateDto
 import com.example.demo.domain.User
 import com.example.demo.domain.UserRepository
 import org.springframework.stereotype.Service
-import java.util.Optional
+import java.util.*
 
 @Service
 class UserService(
@@ -18,7 +21,6 @@ class UserService(
 
     fun getUser(id: Long): Optional<User> {
         return userRepository.findById(id)
-
     }
 
     fun createUser(userRequest: UserRequestDto) : User {
@@ -31,5 +33,17 @@ class UserService(
         )
 
         return userRepository.save(user)
+    }
+
+    fun updateUser(id: Long, updateRequest: UserUpdateDto): User {
+        val userId = userRepository.findById(id)
+        val user = User(
+            id = userId.get().id,
+            name = updateRequest.name,
+            email = updateRequest.email,
+            password = updateRequest.password
+        )
+
+        return user
     }
 }

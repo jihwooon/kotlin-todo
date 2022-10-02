@@ -2,6 +2,7 @@ package com.example.demo.service
 
 import com.example.demo.UserNotFoundException
 import com.example.demo.controller.UserRequestDto
+import com.example.demo.controller.UserUpdateDto
 import com.example.demo.domain.User
 import com.example.demo.domain.UserRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -28,10 +29,6 @@ internal class UserServiceTest {
         MockitoAnnotations.openMocks(this)
         userService = UserService(userRepository)
 
-        val user = User(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")
-
-        given(userRepository.findAll()).willReturn(listOf(user))
-
     }
 
     @Test
@@ -44,15 +41,33 @@ internal class UserServiceTest {
 
     @Test
     fun getUsersWithExistedUser() {
+        val user = User(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")
+
+        given(userRepository.findAll()).willReturn(listOf(user))
+
         val users = userService.getList()
 
         assertThat(users).isNotEmpty
-
         assertThat(users[0].name).isEqualTo("abc")
     }
 
     @Test
-    fun getUserId() {
+    fun getUserWithId() {
+        val id = 1L
+
+        given(userRepository.findById(id)).willReturn(
+            Optional.of(User(id = id))
+        )
+
+        val user = userService.getUser(id)
+
+        assertThat(user.get().id).isEqualTo(id)
+
+        verify(userRepository).findById(id)
+    }
+
+    @Test
+    fun getUserWithNotId() {
         val id = 1004L
 
         given(userRepository.findById(id)).willReturn(
@@ -64,6 +79,8 @@ internal class UserServiceTest {
         }
 
         assertThat(user.id).isEqualTo(id)
+
+        verify(userRepository).findById(id)
     }
 
 //    // TODO : 왜 예외가 안 되는지 확인 하기
@@ -97,4 +114,51 @@ internal class UserServiceTest {
         verify(userRepository).save(refEq(user))
 
     }
+
+    @Test
+    fun updateUserWithExistedId() {
+        val id = 1L
+        val userUpdateRequest = UserUpdateDto(name = "efg", password = "5678", email = "efg@gmail.com")
+
+        given(userRepository.findById(id)).willReturn(
+            Optional.of(User(id = id))
+        )
+
+        given(userRepository.save(any()))
+            .will { invocation ->
+                val id: Long = invocation.getArgument(0)
+                val userData: UserUpdateDto = invocation.getArgument(1)
+                User(
+                    id = id,
+                    name = userData.name,
+                    email = userData.email,
+                    password = userData.password
+                )
+            }
+
+        val updateUser = userService.updateUser(id, userUpdateRequest)
+
+        assertThat(updateUser.id).isEqualTo(id)
+        assertThat(updateUser.name).isEqualTo("efg")
+        assertThat(updateUser.password).isEqualTo("5678")
+        assertThat(updateUser.email).isEqualTo("efg@gmail.com")
+
+    }
+
+    // TODO : 왜 예외가 안 되는지 확인 하기
+//    @Test
+//    fun updateUserWithNotExistedId() {
+//        val id = 1004L
+//        val userUpdateRequest = UserUpdateDto(name = "efg", password = "5678", email = "efg@gmail.com")
+//
+//        given(userRepository.findById(id)).willReturn(
+//            Optional.of(User(id = id))
+//        )
+//        val user = userService.getUser(id).orElseThrow {
+//            UserNotFoundException()
+//        }
+//        assertThatThrownBy { userService.updateUser(user.id, userUpdateRequest) }
+//            .isInstanceOf(ProductNotFoundException::class.java)
+//
+//    }
 }
