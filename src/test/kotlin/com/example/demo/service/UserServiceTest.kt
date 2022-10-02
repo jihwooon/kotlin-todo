@@ -28,10 +28,6 @@ internal class UserServiceTest {
         MockitoAnnotations.openMocks(this)
         userService = UserService(userRepository)
 
-        val user = User(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")
-
-        given(userRepository.findAll()).willReturn(listOf(user))
-
     }
 
     @Test
@@ -44,10 +40,13 @@ internal class UserServiceTest {
 
     @Test
     fun getUsersWithExistedUser() {
+        val user = User(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")
+
+        given(userRepository.findAll()).willReturn(listOf(user))
+
         val users = userService.getList()
 
         assertThat(users).isNotEmpty
-
         assertThat(users[0].name).isEqualTo("abc")
     }
 
