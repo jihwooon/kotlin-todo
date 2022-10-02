@@ -1,11 +1,13 @@
 package com.example.demo.service
 
+import com.example.demo.ProductNotFoundException
 import com.example.demo.UserNotFoundException
 import com.example.demo.controller.UserRequestDto
 import com.example.demo.controller.UserUpdateDto
 import com.example.demo.domain.User
 import com.example.demo.domain.UserRepository
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
@@ -99,7 +101,7 @@ internal class UserServiceTest {
     }
 
     @Test
-    fun updateUser() {
+    fun updateUserWithExistedId() {
         val id = 1L
         val userUpdateRequest = UserUpdateDto(name = "efg", password = "5678", email = "efg@gmail.com")
 
@@ -127,4 +129,21 @@ internal class UserServiceTest {
         assertThat(updateUser.email).isEqualTo("efg")
 
     }
+
+    @Test
+    fun updateUserWithNotExistedId() {
+        val id = 1004L
+        val userUpdateRequest = UserUpdateDto(name = "efg", password = "5678", email = "efg@gmail.com")
+
+        given(userRepository.findById(id)).willReturn(
+            Optional.of(User(id = id))
+        )
+        val user = userService.getUser(id).orElseThrow {
+            UserNotFoundException()
+        }
+        assertThatThrownBy { userService.updateUser(user.id, userUpdateRequest) }
+            .isInstanceOf(ProductNotFoundException::class.java)
+
+    }
 }
+
