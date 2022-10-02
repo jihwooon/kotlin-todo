@@ -55,6 +55,10 @@ dependencies {
     // Spring REST Docs
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc:2.0.6.RELEASE")
 
+    //MockK
+    testImplementation("io.mockk:mockk:1.13.2")
+
+
 }
 
 val snippetsDir = file("build/generated-snippets") // (3)
