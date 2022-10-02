@@ -11,6 +11,8 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.any
+import org.mockito.kotlin.refEq
+import org.mockito.kotlin.verify
 import java.util.*
 
 
@@ -85,12 +87,14 @@ internal class UserServiceTest {
             password = userRequest.password
         )
 
-        given(userRepository.findById(1L)).willReturn(Optional.of(user))
         given(userRepository.save(any())).willReturn(user)
 
         val createUser = userService.createUser(userRequest)
 
         assertThat(createUser.id).isEqualTo(1L)
+
+        //Object argument that is reflection-equal to the given value with support for excluding selected fields from a class.
+        verify(userRepository).save(refEq(user))
 
     }
 }
