@@ -1,6 +1,7 @@
 package com.example.demo.service
 
 import com.example.demo.UserNotFoundException
+import com.example.demo.controller.UserRequestDto
 import com.example.demo.domain.User
 import com.example.demo.domain.UserRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.any
 import java.util.*
 
 
@@ -71,4 +73,24 @@ internal class UserServiceTest {
 //            UserNotFoundException::class.java
 //        )
 //    }
+
+    @Test
+    fun createUser() {
+        val userRequest = UserRequestDto(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")
+
+        val user = User(
+            id = userRequest.id,
+            name = userRequest.name,
+            email = userRequest.email,
+            password = userRequest.password
+        )
+
+        given(userRepository.findById(1L)).willReturn(Optional.of(user))
+        given(userRepository.save(any())).willReturn(user)
+
+        val createUser = userService.createUser(userRequest)
+
+        assertThat(createUser.id).isEqualTo(1L)
+
+    }
 }

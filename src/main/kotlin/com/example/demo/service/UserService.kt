@@ -21,8 +21,15 @@ class UserService(
 
     }
 
-    fun createUser(userRequest: UserRequestDto) : User? {
+    fun createUser(userRequest: UserRequestDto) : User {
 
-        return null
+        val user = User(
+            id = userRequest.id,
+            name = userRequest.name,
+            email = userRequest.email,
+            password = userRequest.password
+        )
+
+        return userRepository.save(user)
     }
 }

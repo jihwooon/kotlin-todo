@@ -33,7 +33,7 @@ class UserController(
     // TODO : User 저장을 만들어라
     @PostMapping("/user")
     @ResponseStatus(HttpStatus.CREATED)
-    fun createUser(@RequestBody userRequest : UserRequestDto) : User? {
+    fun createUser(@RequestBody userRequest : UserRequestDto) : User {
 
         return userService.createUser(userRequest)
     }
