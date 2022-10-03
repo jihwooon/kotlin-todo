@@ -94,10 +94,10 @@ internal class UserControllerTest {
     @Test
     fun  `Patch product response requestUpdateDto`() {
         val userUpdateRequest = UserUpdateDto(name = "efg", password = "5678", email = "efg@gmail.com")
-        val id = 1L
+//        val id = 1L
         val content = "{\"id\":1,\"name\":\"efg\",\"password\":\"5678\",\"email\":\"efg@gmail.com\"}"
 
-        given(userService.updateUser(id, userUpdateRequest))
+        given(userService.updateUser(1L, userUpdateRequest))
             .will { invocation ->
                 val id: Long = invocation.getArgument(0)
                 val userData: UserUpdateDto = invocation.getArgument(1)
@@ -110,7 +110,7 @@ internal class UserControllerTest {
             }
 
         mvc.perform(
-            patch("/user/$id")
+            patch("/user/1")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content)
@@ -118,7 +118,7 @@ internal class UserControllerTest {
             .andExpect(status().isOk)
             .andExpect(content().string(content))
 
-        verify(userService).updateUser(id, userUpdateRequest)
+        verify(userService).updateUser(1L, userUpdateRequest)
     }
 
     @Test
