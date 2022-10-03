@@ -43,12 +43,13 @@ internal class UserServiceTest {
     fun getUsersWithExistedUser() {
         val user = User(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")
 
-        given(userRepository.findAll()).willReturn(listOf(user))
+        given(userRepository.findAll()).willReturn(mutableListOf(user))
 
         val users = userService.getList()
 
         assertThat(users).isNotEmpty
-        assertThat(users[0].name).isEqualTo("abc")
+        assertThat(users.elementAt(0).name).isEqualTo("abc")
+
     }
 
     @Test

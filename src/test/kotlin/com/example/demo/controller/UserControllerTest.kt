@@ -30,7 +30,7 @@ internal class UserControllerTest {
 
     @Test
     fun `Get user return list`() {
-        given(userService.getList()).willReturn(listOf(User(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")))
+        given(userService.getList()).willReturn(mutableListOf(User(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")))
 
         mvc.perform(get("/users"))
             .andExpect(status().isOk)
