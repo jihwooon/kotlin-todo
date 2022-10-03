@@ -61,8 +61,6 @@ dependencies {
     //Mockito Kotlin
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
 
-
-
 }
 
 val snippetsDir = file("build/generated-snippets") // (3)
