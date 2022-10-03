@@ -18,7 +18,7 @@ import javax.validation.constraints.Pattern
 class ProductController(private val productServiceImpl: ProductServiceImpl) {
 
     @GetMapping("/products")
-    fun getProducts(): List<Product> = productServiceImpl.getProducts()
+    fun getProducts(): MutableIterable<Product> = productServiceImpl.getProducts()
 
     @GetMapping("/product/{id}")
     fun getProduct(@PathVariable("id") id: Long): Boolean  {
