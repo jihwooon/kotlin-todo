@@ -96,6 +96,7 @@ internal class UserServiceTest {
     }
 
     @Test
+    @Suppress("Name_Shadowed")
     fun updateUserWithExistedId() {
         val id = 1L
         val userUpdateRequest = UserUpdateDto(name = "efg", password = "5678", email = "efg@gmail.com")
