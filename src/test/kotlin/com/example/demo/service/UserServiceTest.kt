@@ -43,12 +43,13 @@ internal class UserServiceTest {
     fun getUsersWithExistedUser() {
         val user = User(id = 1L, name = "abc", email = "abc@gmail.com", password = "1234")
 
-        given(userRepository.findAll()).willReturn(listOf(user))
+        given(userRepository.findAll()).willReturn(mutableListOf(user))
 
         val users = userService.getList()
 
         assertThat(users).isNotEmpty
-        assertThat(users[0].name).isEqualTo("abc")
+        assertThat(users.elementAt(0).name).isEqualTo("abc")
+
     }
 
     @Test
@@ -98,11 +99,11 @@ internal class UserServiceTest {
     @Test
     @Suppress("Name_Shadowed")
     fun updateUserWithExistedId() {
-        val id = 1L
+//        val id = 1L
         val userUpdateRequest = UserUpdateDto(name = "efg", password = "5678", email = "efg@gmail.com")
 
-        given(userRepository.findById(id)).willReturn(
-            Optional.of(User(id = id))
+        given(userRepository.findById(1L)).willReturn(
+            Optional.of(User(id = 1L))
         )
 
         given(userRepository.save(any()))
@@ -117,9 +118,9 @@ internal class UserServiceTest {
                 )
             }
 
-        val updateUser = userService.updateUser(id, userUpdateRequest)
+        val updateUser = userService.updateUser(1L, userUpdateRequest)
 
-        assertThat(updateUser.id).isEqualTo(id)
+        assertThat(updateUser.id).isEqualTo(1L)
         assertThat(updateUser.name).isEqualTo("efg")
         assertThat(updateUser.password).isEqualTo("5678")
         assertThat(updateUser.email).isEqualTo("efg@gmail.com")

@@ -24,7 +24,7 @@ class UserController(
 
     //TODO : User 전체 정보 조회를 만들어라
     @GetMapping("/users")
-    fun getUserList(): List<User> {
+    fun getUserList(): MutableIterable<User> {
 
         return userService.getList()
     }

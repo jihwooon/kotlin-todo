@@ -16,7 +16,7 @@ internal class ProductServiceImplTest {
 
     @BeforeEach
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.openMocks(this)
 
         productService = ProductServiceImpl(productRepository)
     }

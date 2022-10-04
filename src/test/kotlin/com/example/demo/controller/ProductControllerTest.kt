@@ -42,7 +42,7 @@ internal class ProductControllerTest {
 
         product = Product()
 
-        given(productServiceImpl.getProducts()).willReturn(listOf(product))
+        given(productServiceImpl.getProducts()).willReturn(mutableListOf(product))
 
         given(productServiceImpl.getProduct(productId)).willReturn(Optional.of(product))
 
