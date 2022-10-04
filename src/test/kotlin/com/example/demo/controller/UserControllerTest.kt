@@ -94,7 +94,6 @@ internal class UserControllerTest {
     @Test
     fun  `Patch product response requestUpdateDto`() {
         val userUpdateRequest = UserUpdateDto(name = "efg", password = "5678", email = "efg@gmail.com")
-//        val id = 1L
         val content = "{\"id\":1,\"name\":\"efg\",\"password\":\"5678\",\"email\":\"efg@gmail.com\"}"
 
         given(userService.updateUser(1L, userUpdateRequest))
